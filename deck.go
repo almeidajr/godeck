@@ -50,10 +50,10 @@ func WithMany(n int) DeckOption {
 	}
 }
 
-func (d Deck) Shuffle() {
-	r := rand.New(rand.NewSource(time.Now().Unix()))
+var shuffler = rand.New(rand.NewSource(time.Now().UnixNano()))
 
-	r.Shuffle(len(d), func(i, j int) {
+func (d Deck) Shuffle() {
+	shuffler.Shuffle(len(d), func(i, j int) {
 		d[i], d[j] = d[j], d[i]
 	})
 }
