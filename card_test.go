@@ -25,3 +25,11 @@ func TestCardString(t *testing.T) {
 		}
 	}
 }
+
+func TestNewDeck(t *testing.T) {
+	d := NewDeck()
+
+	if len(d) != defaultDeckSize {
+		t.Errorf("Expected 52 cards, but got %d", len(d))
+	}
+}
