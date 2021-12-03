@@ -10,9 +10,9 @@ func TestNewDeck(t *testing.T) {
 	}
 }
 
-func TestAddJokers(t *testing.T) {
+func TestWithAddJokers(t *testing.T) {
 	n := 2
-	d := NewDeck().AddJokers(n)
+	d := NewDeck(WithJokers(n))
 
 	if len(d) != defaultDeckSize+n {
 		t.Errorf("Expected %d cards, but got %d", defaultDeckSize+n, len(d))
@@ -24,21 +24,38 @@ func TestAddJokers(t *testing.T) {
 	}
 }
 
-func TestRemove(t *testing.T) {
-	d := NewDeck()
-	d = d.Remove(func(c Card) bool {
-		switch c.Rank {
-		case Eight, Nine, Ten:
-			return true
-		default:
-			return false
-		}
-	})
+func TestWithRemove(t *testing.T) {
+	d := NewDeck(
+		WithRemove(func(c Card) bool {
+			switch c.Rank {
+			case Eight, Nine, Ten:
+				return true
+			default:
+				return false
+			}
+		}),
+	)
 
 	for _, c := range d {
 		switch c.Rank {
 		case Eight, Nine, Ten:
 			t.Errorf("Expected to remove %s", c)
 		}
+	}
+}
+
+func TestWithMany(t *testing.T) {
+	n := 5
+	d := NewDeck(WithMany(n))
+
+	if len(d) != defaultDeckSize*n {
+		t.Errorf("Expected %d cards, but got %d", defaultDeckSize*n, len(d))
+	}
+
+	m := 2
+	d = NewDeck(WithMany(n), WithJokers(m))
+
+	if len(d) != defaultDeckSize*n+m {
+		t.Errorf("Expected %d cards, but got %d", defaultDeckSize*n+m, len(d))
 	}
 }
