@@ -37,3 +37,15 @@ func (d Deck) AddJokers(n int) Deck {
 
 	return d
 }
+
+func (d Deck) Remove(r func(c Card) bool) Deck {
+	var ret Deck
+
+	for _, c := range d {
+		if !r(c) {
+			ret = append(ret, c)
+		}
+	}
+
+	return ret
+}

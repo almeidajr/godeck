@@ -23,3 +23,22 @@ func TestAddJokers(t *testing.T) {
 		}
 	}
 }
+
+func TestRemove(t *testing.T) {
+	d := NewDeck()
+	d = d.Remove(func(c Card) bool {
+		switch c.Rank {
+		case Eight, Nine, Ten:
+			return true
+		default:
+			return false
+		}
+	})
+
+	for _, c := range d {
+		switch c.Rank {
+		case Eight, Nine, Ten:
+			t.Errorf("Expected to remove %s", c)
+		}
+	}
+}
